@@ -10,8 +10,18 @@
 
     <h1><%= hotelground.title %></h1>
     <h1><%= hotelground.location %></h1>
-
+    <p>
+        <a href="/hotelgrounds/<%= hotelground._id %>/edit">Edit</a>
+    </p>
+    <p>
+        <form action="/hotelgrounds/<%= hotelground._id%>?_method=DELETE" method="POST">
+            <button>Delete</button>
+        </form>
+    </p>
+        
+<footer>
     <a href="/hotelgrounds">All Hotelgrounds</a>
+</footer>
    
     
     

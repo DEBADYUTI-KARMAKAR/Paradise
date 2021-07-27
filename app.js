@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override'); 
 const Hotelground = require('./models/hotelground');
+const { findByIdAndUpdate } = require('./models/hotelground');
 
 mongoose.connect('mongodb://localhost:27017/paradise',{
     useNewUrlParser:true,
@@ -21,6 +23,7 @@ app.set('view engine','ejs');
 app.set('views', path.join(__dirname,'views'))
 
 app.use(express.urlencoded({extended: true}))
+app.use(methodOverride('_method'))
 
 
 app.get('/', (req, res) =>{
@@ -57,7 +60,24 @@ app.get('/hotelgrounds/:id', async(req, res) =>{
     const hotelground = await Hotelground.findById(req.params.id);
     res.render('hotelgrounds/show', { hotelground });
 })
+app.get('/hotelgrounds/:id/edit', async(req, res) =>{
+    
+    const hotelground = await Hotelground.findById(req.params.id);
+    res.render('hotelgrounds/edit', { hotelground });
+})
 
+
+app.put('/hotelgrounds/:id', async(req, res) =>{
+    const { id } = req.params;
+    const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
+    res.redirect(`/hotelgrounds/${hotelground._id}`)
+});
+
+app.delete('/hotelgrounds/:id', async(req,res) =>{
+    const { id } = req.params;
+    await Hotelground.findByIdAndDelete(id);
+    res.redirect('/hotelgrounds');
+} )
 
 app.listen(3000, () =>{
     console.log("Hosting 3000");
