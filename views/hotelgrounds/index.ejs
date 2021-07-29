@@ -1,21 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotelgrounds</title>
-</head>
-<body>
+<% layout('layouts/boilerplate') %>
     <h1>All Hotelgrounds</h1>
     <div>
         <a href="/hotelgrounds/new">Add New Hotels</a>
     </div>
     <ul>
         <% for(let hotelground of hotelgrounds ) { %>
-            <li><a href="/hotelgrounds/<%= hotelground._id %>"><%= hotelground.title %> </a></li>
+           <div class="card" mb-3>
+               <div class="row">
+                   <div class="col-md-4">
+                       <img class="img-fluid" alt="" src="<%= hotelground.image %>">
+                   </div>
+                   <div class="col-md-8">
+                       <div class="card-body">
+                           <h5 class="card-title"><%= hotelground.title %></h5>
+                           <p class="card-text"><%= hotelground.description %></p>
+                           <p class="card-text"><small class="text-muted"><%= hotelground.location %></small></p>
+                           <a class="btn btn-primary"  href="/hotelgrounds/<%= hotelground._id%>">View <%= hotelground.title %></a>
+                       </div>
+                   </div>
+               </div>
+           </div>
             <% } %>
     </ul>
     
-</body>
-</html>
