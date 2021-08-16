@@ -50,11 +50,14 @@ app.get('/hotelgrounds/new', (req, res) =>{
     res.render('hotelgrounds/new');
 })
 
-app.post('/hotelgrounds', async(req, res) =>{
-    
+app.post('/hotelgrounds', async (req, res, next) =>{
+    try {
     const hotelground =new Hotelground(req.body.hotelground);
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`)
+    } catch (e){
+        next(e)
+    }
 })
 
 
@@ -80,6 +83,11 @@ app.delete('/hotelgrounds/:id', async(req,res) =>{
     await Hotelground.findByIdAndDelete(id);
     res.redirect('/hotelgrounds');
 } )
+
+
+app.use((err,req,res,next) => {
+    res.send("Something went wrong");
+})
 
 app.listen(3000, () =>{
     console.log("Hosting 3000");
