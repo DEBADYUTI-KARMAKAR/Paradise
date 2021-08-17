@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const Joi = require('joi')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override'); 
@@ -54,7 +55,25 @@ app.get('/hotelgrounds/new', (req, res) =>{
 
 app.post('/hotelgrounds', catchAsync(async (req, res, next) =>{
     
-    if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
+   // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
+
+    const hotelgroundSchema = Joi.object({
+        hotelground: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required().min(0),
+            image : Joi.string().required(),
+            location : Joi.string().required(),
+            description : Joi.string().required(),
+
+        }).required()
+
+    })
+    const {error} = hotelgroundSchema.validate(req.body);
+    if(error){
+        const msg =error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg,400)
+    }
+    
     const hotelground =new Hotelground(req.body.hotelground);
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`)
