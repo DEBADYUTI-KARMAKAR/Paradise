@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const catchAsync = require('./utils/catchAsync')
 const methodOverride = require('method-override'); 
 const Hotelground = require('./models/hotelground');
 const { findByIdAndUpdate } = require('./models/hotelground');
@@ -39,50 +40,48 @@ app.get('/', (req, res) =>{
     res.send(hotel);
 })*/
 
-app.get('/hotelgrounds', async(req, res) =>{
+app.get('/hotelgrounds', catchAsync( async(req, res) =>{
     //res.send("Hello from debadyuti");
     const hotelgrounds = await Hotelground.find({});
     res.render('hotelgrounds/index',  {hotelgrounds});
-})
+}))
 
 app.get('/hotelgrounds/new', (req, res) =>{
     
     res.render('hotelgrounds/new');
 })
 
-app.post('/hotelgrounds', async (req, res, next) =>{
-    try {
+app.post('/hotelgrounds', catchAsync(async (req, res, next) =>{
+    
     const hotelground =new Hotelground(req.body.hotelground);
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`)
-    } catch (e){
-        next(e)
-    }
-})
+   
+}))
 
 
-app.get('/hotelgrounds/:id', async(req, res) =>{
+app.get('/hotelgrounds/:id', catchAsync(async(req, res) =>{
     const hotelground = await Hotelground.findById(req.params.id);
     res.render('hotelgrounds/show', { hotelground });
-})
-app.get('/hotelgrounds/:id/edit', async(req, res) =>{
+}))
+app.get('/hotelgrounds/:id/edit', catchAsync(async(req, res) =>{
     
     const hotelground = await Hotelground.findById(req.params.id);
     res.render('hotelgrounds/edit', { hotelground });
-})
+}))
 
 
-app.put('/hotelgrounds/:id', async(req, res) =>{
+app.put('/hotelgrounds/:id', catchAsync(async(req, res) =>{
     const { id } = req.params;
     const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
     res.redirect(`/hotelgrounds/${hotelground._id}`)
-});
+}));
 
-app.delete('/hotelgrounds/:id', async(req,res) =>{
+app.delete('/hotelgrounds/:id', catchAsync(async(req,res) =>{
     const { id } = req.params;
     await Hotelground.findByIdAndDelete(id);
     res.redirect('/hotelgrounds');
-} )
+} ))
 
 
 app.use((err,req,res,next) => {
