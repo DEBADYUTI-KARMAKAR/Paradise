@@ -83,6 +83,10 @@ app.delete('/hotelgrounds/:id', catchAsync(async(req,res) =>{
     res.redirect('/hotelgrounds');
 } ))
 
+app.all('*',(req,res,next) =>{
+    res.send("404!!");
+})
+
 
 app.use((err,req,res,next) => {
     res.send("Something went wrong");
