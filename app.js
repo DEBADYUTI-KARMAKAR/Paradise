@@ -54,6 +54,7 @@ app.get('/hotelgrounds/new', (req, res) =>{
 
 app.post('/hotelgrounds', catchAsync(async (req, res, next) =>{
     
+    if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
     const hotelground =new Hotelground(req.body.hotelground);
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`)
