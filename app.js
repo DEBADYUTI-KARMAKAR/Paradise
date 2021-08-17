@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const catchAsync = require('./utils/catchAsync')
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override'); 
 const Hotelground = require('./models/hotelground');
 const { findByIdAndUpdate } = require('./models/hotelground');
@@ -83,13 +84,15 @@ app.delete('/hotelgrounds/:id', catchAsync(async(req,res) =>{
     res.redirect('/hotelgrounds');
 } ))
 
-app.all('*',(req,res,next) =>{
-    res.send("404!!");
+app.all('*', (req,res, next) => {
+    next(new ExpressError('Page Not Found', 404))
 })
 
 
 app.use((err,req,res,next) => {
-    res.send("Something went wrong");
+    const {statusCode = 500, message = 'Something went wrong' } =err;
+    res.status(statusCode).send(message);
+    //res.send("Opss!!Something went wrong");
 })
 
 app.listen(3000, () =>{
