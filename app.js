@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const Joi = require('joi')
+
+const { hotelgroundSchema } = require('./schemas.js')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override'); 
@@ -31,6 +32,17 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 
 
+const validateHotelground = (req,res,next) => {
+    
+    const {error} = hotelgroundSchema.validate(req.body);
+    if(error){
+        const msg =error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg,400)
+    }else{
+        next();
+    }
+}
+
 app.get('/', (req, res) =>{
     //res.send("Hello from debadyuti");
     res.render('home')
@@ -53,26 +65,11 @@ app.get('/hotelgrounds/new', (req, res) =>{
     res.render('hotelgrounds/new');
 })
 
-app.post('/hotelgrounds', catchAsync(async (req, res, next) =>{
+app.post('/hotelgrounds', validateHotelground, catchAsync(async (req, res, next) =>{
     
    // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
 
-    const hotelgroundSchema = Joi.object({
-        hotelground: Joi.object({
-            title: Joi.string().required(),
-            price: Joi.number().required().min(0),
-            image : Joi.string().required(),
-            location : Joi.string().required(),
-            description : Joi.string().required(),
-
-        }).required()
-
-    })
-    const {error} = hotelgroundSchema.validate(req.body);
-    if(error){
-        const msg =error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg,400)
-    }
+    
     
     const hotelground =new Hotelground(req.body.hotelground);
     await hotelground.save();
@@ -92,7 +89,7 @@ app.get('/hotelgrounds/:id/edit', catchAsync(async(req, res) =>{
 }))
 
 
-app.put('/hotelgrounds/:id', catchAsync(async(req, res) =>{
+app.put('/hotelgrounds/:id', validateHotelground, catchAsync(async(req, res) =>{
     const { id } = req.params;
     const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
     res.redirect(`/hotelgrounds/${hotelground._id}`)
