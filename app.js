@@ -101,6 +101,10 @@ app.delete('/hotelgrounds/:id', catchAsync(async(req,res) =>{
     res.redirect('/hotelgrounds');
 } ))
 
+app.post('/hotelgrounds/:id/reviews', catchAsync(async (req,res) => {
+    res.send('You made it')
+}))
+
 app.all('*', (req,res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
