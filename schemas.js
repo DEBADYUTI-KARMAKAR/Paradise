@@ -1,4 +1,5 @@
 const Joi = require('joi')
+
 module.exports.hotelgroundSchema = Joi.object({
     hotelground: Joi.object({
         title: Joi.string().required(),
@@ -10,4 +11,5 @@ module.exports.hotelgroundSchema = Joi.object({
     }).required()
 
 });
+
 
