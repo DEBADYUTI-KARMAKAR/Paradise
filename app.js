@@ -89,9 +89,11 @@ app.post('/hotelgrounds', validateHotelground, catchAsync(async (req, res, next)
 
 
 app.get('/hotelgrounds/:id', catchAsync(async(req, res) =>{
-    const hotelground = await Hotelground.findById(req.params.id);
+    const hotelground = await Hotelground.findById(req.params.id).populate('reviews');
+    console.log(hotelground);
     res.render('hotelgrounds/show', { hotelground });
 }))
+
 app.get('/hotelgrounds/:id/edit', catchAsync(async(req, res) =>{
     
     const hotelground = await Hotelground.findById(req.params.id);
@@ -119,15 +121,8 @@ app.post('/hotelgrounds/:id/reviews', validateReview ,catchAsync(async (req, res
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`);
 }))
-/*
-app.post('/hotelgrounds/:id/reviews',  catchAsync(async (req, res) => {
-    const hotelground = await Hotelground.findById(req.params.id);
-    const review = new Review(req.body.review);
-    hotelground.reviews.push(review);
-    await review.save();
-    await hotelground.save();
-    res.redirect(`/hotelgrounds/${hotelground._id}`);
-}))*/
+
+
 
 app.all('*', (req,res, next) => {
     next(new ExpressError('Page Not Found', 404))
