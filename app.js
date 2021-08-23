@@ -42,6 +42,17 @@ const validateHotelground = (req,res,next) => {
     }
 }
 
+const validateReview =(req, res,next) =>{
+    const {error} = reviewSchema.validate(req.body);
+    if(error){
+        const msg =error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg,400)
+    }else{
+        next();
+    }
+
+}
+
 app.get('/', (req, res) =>{
     //res.send("Hello from debadyuti");
     res.render('home')
@@ -100,7 +111,7 @@ app.delete('/hotelgrounds/:id', catchAsync(async(req,res) =>{
     res.redirect('/hotelgrounds');
 } ))
 
-app.post('/hotelgrounds/:id/reviews',  catchAsync(async (req, res) => {
+app.post('/hotelgrounds/:id/reviews', validateReview ,catchAsync(async (req, res) => {
     const hotelground = await Hotelground.findById(req.params.id);
     const review = new Review(req.body.review);
     hotelground.reviews.push(review);
@@ -108,6 +119,15 @@ app.post('/hotelgrounds/:id/reviews',  catchAsync(async (req, res) => {
     await hotelground.save();
     res.redirect(`/hotelgrounds/${hotelground._id}`);
 }))
+/*
+app.post('/hotelgrounds/:id/reviews',  catchAsync(async (req, res) => {
+    const hotelground = await Hotelground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    hotelground.reviews.push(review);
+    await review.save();
+    await hotelground.save();
+    res.redirect(`/hotelgrounds/${hotelground._id}`);
+}))*/
 
 app.all('*', (req,res, next) => {
     next(new ExpressError('Page Not Found', 404))

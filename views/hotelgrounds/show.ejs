@@ -23,15 +23,18 @@
             </div>
         </div>
         <h2>Leave a Review</h2>
-        <form action="/hotelgrounds/<%= hotelground._id %>/reviews" method="POST" class="mb-3">
+        <form action="/hotelgrounds/<%= hotelground._id %>/reviews" method="POST" class="mb-3 validated-form"  novalidate>
             <div class="mb-3">
-                <label for="rating" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" class="form-range" name="review[rating" id="rating">
+                <label class="form-label" for="rating" >Rating</label>
+                <input class="form-range" type="range" min="1" max="5"  name="review[rating]" id="rating">
             </div>
             <div class="mb-3">
                 <label class="form-label" for="body">Review</label>
-                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"></textarea>
+                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
 
+                <div class="valid-feedback">
+                    Valid
+                </div>
             </div>
             <button class="btn btn-success">Submit</button>
         </form>
