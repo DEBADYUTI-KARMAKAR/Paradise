@@ -122,7 +122,12 @@ app.post('/hotelgrounds/:id/reviews', validateReview ,catchAsync(async (req, res
     res.redirect(`/hotelgrounds/${hotelground._id}`);
 }))
 
-
+app.delete('/hotelgrounds/:id/reviews/:reviewId' , catchAsync(async(req,res)=>{
+    const {id,reviewId} = req.params;
+    await Hotelground.findByIdAndUpdate(id, { $pull: {reviews: reviewId}}); // $pull => remove from mongo
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/hotelgrounds/${id}`)
+}))
 
 app.all('*', (req,res, next) => {
     next(new ExpressError('Page Not Found', 404))
