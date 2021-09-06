@@ -3,13 +3,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const { hotelgroundSchema, reviewSchema } = require('./schemas.js');
-const catchAsync = require('./utils/catchAsync');
+
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Hotelground = require('./models/hotelground');
 const Review = require('./models/review');
 
 const hotelgrounds = require('./routes/hotelgrounds')
+const rewiews = require('./routes/reviews')
 
 mongoose.connect('mongodb://localhost:27017/paradise',{
     useNewUrlParser:true,
@@ -34,18 +35,10 @@ app.use(methodOverride('_method'))
 
 
 
-const validateReview =(req, res,next) =>{
-    const {error} = reviewSchema.validate(req.body);
-    if(error){
-        const msg =error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg,400)
-    }else{
-        next();
-    }
-
-}
 
 app.use('/hotelgrounds', hotelgrounds)
+
+app.use('/hotelgrounds/:id/reviews', reviews)
 
 app.get('/', (req, res) =>{
     //res.send("Hello from debadyuti");
@@ -60,21 +53,7 @@ app.get('/', (req, res) =>{
 
 
 
-app.post('/hotelgrounds/:id/reviews', validateReview ,catchAsync(async (req, res) => {
-    const hotelground = await Hotelground.findById(req.params.id);
-    const review = new Review(req.body.review);
-    hotelground.reviews.push(review);
-    await review.save();
-    await hotelground.save();
-    res.redirect(`/hotelgrounds/${hotelground._id}`);
-}))
 
-app.delete('/hotelgrounds/:id/reviews/:reviewId' , catchAsync(async(req,res)=>{
-    const {id,reviewId} = req.params;
-    await Hotelground.findByIdAndUpdate(id, { $pull: {reviews: reviewId}}); // $pull => remove from mongo
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/hotelgrounds/${id}`)
-}))
 
 app.all('*', (req,res, next) => {
     next(new ExpressError('Page Not Found', 404))
