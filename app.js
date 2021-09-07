@@ -10,7 +10,7 @@ const Hotelground = require('./models/hotelground');
 const Review = require('./models/review');
 
 const hotelgrounds = require('./routes/hotelgrounds')
-const rewiews = require('./routes/reviews')
+const reviews = require('./routes/reviews')
 
 mongoose.connect('mongodb://localhost:27017/paradise',{
     useNewUrlParser:true,
