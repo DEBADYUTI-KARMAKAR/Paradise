@@ -15,6 +15,7 @@
     "express-session": "^1.17.2",
     "joi": "^17.4.2",
     "method-override": "^3.0.0",
-    "mongoose": "^5.13.2"
+    "mongoose": "^5.13.2",
+    "nodemon": "^2.0.12"
   }
 }
