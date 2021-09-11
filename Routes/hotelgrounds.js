@@ -31,10 +31,10 @@ router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
     
    // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
 
-    
-    
-    const hotelground =new Hotelground(req.body.hotelground);
-    await hotelground.save();
+   
+   const hotelground =new Hotelground(req.body.hotelground);
+   await hotelground.save();
+   //req.flash('success','Successfully made a new campground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
    
 }))
