@@ -34,7 +34,7 @@ router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
    
    const hotelground =new Hotelground(req.body.hotelground);
    await hotelground.save();
-   //req.flash('success','Successfully made a new campground')
+   req.flash('success','Successfully made a new campground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
    
 }))
