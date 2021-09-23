@@ -26,6 +26,7 @@ router.post('/', validateReview ,catchAsync(async (req, res) => {
     hotelground.reviews.push(review);
     await review.save();
     await hotelground.save();
+    req.flash('success', "Review Added")
     res.redirect(`/hotelgrounds/${hotelground._id}`);
 }))
 
@@ -33,6 +34,7 @@ router.delete('/:reviewId' , catchAsync(async(req,res)=>{
     const {id,reviewId} = req.params;
     await Hotelground.findByIdAndUpdate(id, { $pull: {reviews: reviewId}}); // $pull => remove from mongo
     await Review.findByIdAndDelete(reviewId);
+    req.flash('success', "Review Deleted")
     res.redirect(`/hotelgrounds/${id}`)
 }))
 

@@ -56,12 +56,14 @@ router.get('/:id/edit', catchAsync(async(req, res) =>{
 router.put('/:id', validateHotelground, catchAsync(async(req, res) =>{
     const { id } = req.params;
     const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
+    req.flash('success','Successfully Updated Hotelground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
 }));
 
 router.delete('/:id', catchAsync(async(req,res) =>{
     const { id } = req.params;
     await Hotelground.findByIdAndDelete(id);
+    req.flash('success', "Hotelground Deleted")
     res.redirect('/hotelgrounds');
 }))
 
