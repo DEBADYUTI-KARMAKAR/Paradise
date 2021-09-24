@@ -40,15 +40,23 @@ router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
 }))
 
 
-router.get('/:id', catchAsync(async(req, res) =>{
+router.get('/:id', catchAsync(async(req, res,) =>{
     const hotelground = await Hotelground.findById(req.params.id).populate('reviews');
-    console.log(hotelground);
+  
+    if(!hotelground){
+        req.flash('error','Cannot Find');
+        return res.redirect('/hotelgrounds');
+    }
     res.render('hotelgrounds/show', { hotelground });
 }))
 
 router.get('/:id/edit', catchAsync(async(req, res) =>{
     
     const hotelground = await Hotelground.findById(req.params.id);
+    if(!hotelground){
+        req.flash('error','Cannot Find');
+        return res.redirect('/hotelgrounds');
+    }
     res.render('hotelgrounds/edit', { hotelground });
 }))
 
@@ -63,7 +71,7 @@ router.put('/:id', validateHotelground, catchAsync(async(req, res) =>{
 router.delete('/:id', catchAsync(async(req,res) =>{
     const { id } = req.params;
     await Hotelground.findByIdAndDelete(id);
-    req.flash('success', "Hotelground Deleted")
+    req.flash('success', "Hotelground Deleted ")
     res.redirect('/hotelgrounds');
 }))
 
