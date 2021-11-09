@@ -12,8 +12,10 @@ const User = require('./models/user');
 const Hotelground = require('./models/hotelground');
 const Review = require('./models/review');
 
-const hotelgrounds = require('./routes/hotelgrounds')
-const reviews = require('./routes/reviews')
+const userRoutes = require('./routes/users')
+const hotelgroundRoutes = require('./routes/hotelgrounds')
+const reviewRoutes = require('./routes/reviews')
+
 
 mongoose.connect('mongodb://localhost:27017/paradise',{
     useNewUrlParser:true,
@@ -72,9 +74,9 @@ app.get('/fakeUser', async (req,res) =>{
     res.send(newUser);
 })
 
-app.use('/hotelgrounds', hotelgrounds)
-
-app.use('/hotelgrounds/:id/reviews', reviews)
+app.use('/',userRoutes)
+app.use('/hotelgrounds', hotelgroundRoutes)
+app.use('/hotelgrounds/:id/reviews', reviewRoutes)
 
 app.get('/', (req, res) =>{
     //res.send("Hello from debadyuti");
