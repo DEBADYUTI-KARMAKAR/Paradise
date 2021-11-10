@@ -9,8 +9,10 @@ router.get('/register', (req, res)=>{
 
 })
 
-router.post('/register', async (req,res) => {
+router.post('/register', async (req, res)=>{
+
     res.send(req.body);
+
 })
 
 module.exports = router;
