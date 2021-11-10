@@ -1,2 +1,26 @@
 <% layout('layouts/boilerplate')%>
-
+<h1>Register</h1>
+<form action="/register" mrthod="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-control" type="text" id="username" name="username" required>
+        <div class="valid-feedback">
+            Valid
+        </div>
+    </div> 
+    <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="text" id="email" name="email" required>
+        <div class="valid-feedback">
+            Valid
+        </div>
+    </div> 
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" type="password" id="password" name="password" required>
+        <div class="valid-feedback">
+            Valid
+        </div>
+    </div> 
+    <button class="btn btn-success">Register</button>
+</form>
