@@ -33,4 +33,10 @@ router.post('/login', passport.authenticate('local', {failureFlash:true,failureR
     res.redirect('/hotelgrounds')
 })
 
+router.get('/logout',(req,res) =>{
+    req.logout();
+    req.flash('success', "Bye!!");
+    res.redirect('/hotelgrounds');
+})
+
 module.exports = router;
