@@ -33,6 +33,7 @@ router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
 
    
    const hotelground =new Hotelground(req.body.hotelground);
+   hotelground.author =  req.user._id;
    await hotelground.save();
    req.flash('success','Successfully made a new campground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
@@ -41,8 +42,8 @@ router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
 
 
 router.get('/:id', catchAsync(async(req, res,) =>{
-    const hotelground = await Hotelground.findById(req.params.id).populate('reviews');
-  
+    const hotelground = await Hotelground.findById(req.params.id).populate('reviews').populate('author');
+    console.log(hotelground);
     if(!hotelground){
         req.flash('error','Cannot Find');
         return res.redirect('/hotelgrounds');
