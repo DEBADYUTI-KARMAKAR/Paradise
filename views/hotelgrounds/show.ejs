@@ -14,7 +14,7 @@
 
                 <li class="list-group-item">$<%= hotelground.price%>/night</li>
             </ul>
-            <% if(hotelground.author.equals(currentUser._id)) { %>
+            <% if( currentUser && hotelground.author.equals(currentUser._id)) { %>
             <div class="card-body">
                 <a class="card-link btn btn-info" href="/hotelgrounds/<%=hotelground._id%>/edit">Edit</a>
                 <form class="d-inline" action="/hotelgrounds/<%=hotelground._id%>?_method=DELETE" method="POST">
