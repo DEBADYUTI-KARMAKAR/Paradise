@@ -1,4 +1,4 @@
-const { hotelgroundSchema } = require('./schemas.js');
+const { hotelgroundSchema, reviewSchema } = require('./schemas.js');
 
 const ExpressError = require('./utils/ExpressError');
 const Hotelground = require('./models/hotelground')
@@ -30,4 +30,16 @@ module.exports.isAuthor = async(req,res,next) =>{
         res.redirect(`/hotelgrounds/${id}`)
     }
     next();
+}
+
+
+module.exports.validateReview =(req, res,next) =>{
+    const {error} = reviewSchema.validate(req.body);
+    if(error){
+        const msg =error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg,400)
+    }else{
+        next();
+    }
+
 }
