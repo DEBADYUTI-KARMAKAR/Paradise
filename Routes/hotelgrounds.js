@@ -1,20 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const { hotelgroundSchema } = require('../schemas.js');
-const {isLoggedIn} = require('../middleware')
-const ExpressError = require('../utils/ExpressError');
+const {isLoggedIn, validateHotelground, isAuthor} = require('../middleware')
+
 const Hotelground = require('../models/hotelground');
-const validateHotelground = (req,res,next) => {
-    
-    const {error} = hotelgroundSchema.validate(req.body);
-    if(error){
-        const msg =error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg,400)
-    }else{
-        next();
-    }
-}
+
+
 
 router.get('/', catchAsync( async(req, res) =>{
     //res.send("Hello from debadyuti");
@@ -51,7 +42,7 @@ router.get('/:id', catchAsync(async(req, res,) =>{
     res.render('hotelgrounds/show', { hotelground });
 }))
 
-router.get('/:id/edit',isLoggedIn, catchAsync(async(req, res) =>{
+router.get('/:id/edit', isLoggedIn ,isAuthor, catchAsync(async(req, res) =>{
     const { id } = req.params;
     const hotelground = await Hotelground.findById(id);
     
@@ -59,27 +50,20 @@ router.get('/:id/edit',isLoggedIn, catchAsync(async(req, res) =>{
         req.flash('error','Cannot Find');
         return res.redirect('/hotelgrounds');
     }
-    if(!hotelground.author.equals(req.user._id)){
-        req.flash('error','Not Permitted');
-        res.redirect(`/hotelgrounds/${id}`)
-    }
+   
     res.render('hotelgrounds/edit', { hotelground });
 }))
 
 
-router.put('/:id',isLoggedIn, validateHotelground, catchAsync(async(req, res) =>{
+router.put('/:id',isLoggedIn, isAuthor, validateHotelground, catchAsync(async(req, res) =>{
     const { id } = req.params;
-    const hotelground = await Hotelground.findById(id);
-    if(!hotelground.author.equals(req.user._id)){
-        req.flash('error','Not Permitted');
-        res.redirect(`/hotelgrounds/${id}`)
-    }
-    const hotel = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
+   
+    const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
     req.flash('success','Successfully Updated Hotelground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
 }));
 
-router.delete('/:id', isLoggedIn,catchAsync(async(req,res) =>{
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async(req,res) =>{
     const { id } = req.params;
     await Hotelground.findByIdAndDelete(id);
     req.flash('success', "Hotelground Deleted ")
