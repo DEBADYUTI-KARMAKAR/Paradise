@@ -52,11 +52,16 @@ router.get('/:id', catchAsync(async(req, res,) =>{
 }))
 
 router.get('/:id/edit',isLoggedIn, catchAsync(async(req, res) =>{
+    const { id } = req.params;
+    const hotelground = await Hotelground.findById(id);
     
-    const hotelground = await Hotelground.findById(req.params.id);
     if(!hotelground){
         req.flash('error','Cannot Find');
         return res.redirect('/hotelgrounds');
+    }
+    if(!hotelground.author.equals(req.user._id)){
+        req.flash('error','Not Permitted');
+        res.redirect(`/hotelgrounds/${id}`)
     }
     res.render('hotelgrounds/edit', { hotelground });
 }))
@@ -64,7 +69,12 @@ router.get('/:id/edit',isLoggedIn, catchAsync(async(req, res) =>{
 
 router.put('/:id',isLoggedIn, validateHotelground, catchAsync(async(req, res) =>{
     const { id } = req.params;
-    const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
+    const hotelground = await Hotelground.findById(id);
+    if(!hotelground.author.equals(req.user._id)){
+        req.flash('error','Not Permitted');
+        res.redirect(`/hotelgrounds/${id}`)
+    }
+    const hotel = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
     req.flash('success','Successfully Updated Hotelground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
 }));
