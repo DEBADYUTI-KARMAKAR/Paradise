@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
-const {validateReview, isLoggedIn} = require('../middleware')
+const {validateReview, isLoggedIn , isReviewAuthor} = require('../middleware');
 const Hotelground = require('../models/hotelground');
 const Review = require('../models/review');
 
@@ -22,7 +22,7 @@ router.post('/', isLoggedIn, validateReview ,catchAsync(async (req, res) => {
     res.redirect(`/hotelgrounds/${hotelground._id}`);
 }))
 
-router.delete('/:reviewId' ,isLoggedIn, catchAsync(async(req,res)=>{
+router.delete('/:reviewId' ,isLoggedIn, isReviewAuthor, catchAsync(async(req,res)=>{
     const {id,reviewId} = req.params;
     await Hotelground.findByIdAndUpdate(id, { $pull: {reviews: reviewId}}); // $pull => remove from mongo
     await Review.findByIdAndDelete(reviewId);
