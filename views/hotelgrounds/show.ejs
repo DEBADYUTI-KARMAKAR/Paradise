@@ -53,9 +53,11 @@
                     <h5 class="card-title">Rating <%= review.rating %></h5>
                     <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6>
                     <p class="card-title">Review: <%= review.body %></p>
+                    <% if( currentUser && review.author.equals(currentUser._id)) { %>
                     <form action="/hotelgrounds/<%= hotelground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    <% } %>
                 </div>
             </div>
         <% }%>
