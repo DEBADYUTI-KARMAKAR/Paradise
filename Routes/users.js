@@ -12,10 +12,6 @@ router.post('/register', catchAsync ( users.register))
 router.get('/login', users.renderLogin);
 router.post('/login', passport.authenticate('local', {failureFlash:true,failureRedirect:'/login'})  ,users.login)
 
-router.get('/logout',(req,res) =>{
-    req.logout();
-    req.flash('success', "Bye!!");
-    res.redirect('/hotelgrounds');
-})
+router.get('/logout', users.logout);
 
 module.exports = router;

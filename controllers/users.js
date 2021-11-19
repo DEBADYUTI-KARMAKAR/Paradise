@@ -33,3 +33,9 @@ module.exports.login = (req,res) =>{
     delete req.session.returnTo;
     res.redirect(redirectUrl)
 }
+
+module.exports.logout = (req,res) =>{
+    req.logout();
+    req.flash('success', "Bye!!");
+    res.redirect('/hotelgrounds');
+}
