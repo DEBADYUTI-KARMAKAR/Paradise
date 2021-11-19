@@ -3,30 +3,11 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync')
 const User = require('../models/user');
 const passport = require('passport');
-
+const users = require('../controllers/users')
  
-router.get('/register', (req, res)=>{
+router.get('/register', users.renderRegister);
 
-    res.render('users/register');
-
-})
-
-router.post('/register', catchAsync ( async(req, res)=>{
-    try{
-    const {email, username, password} = req.body;
-    const user = new User({email,username})
-    const registeredUser =  await User.register(user, password);
-    req.login(registeredUser, err =>{
-        if(err) return next(err);
-        req.flash('Success','Welcome to Paradise!!')
-        res.redirect('/hotelgrounds')
-    })
-    } catch(e)
-    {
-        req.flash('error',e.message)
-        res.redirect('register')
-    }
-}))
+router.post('/register', catchAsync ( users.register))
 
 router.get('/login',(req,res) =>{
     res.render('users/login');
