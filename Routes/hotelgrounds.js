@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const hotelgrounds = require('../controllers/hotelgrounds')
 const catchAsync = require('../utils/catchAsync');
 const {isLoggedIn, validateHotelground, isAuthor} = require('../middleware')
 
@@ -7,72 +8,20 @@ const Hotelground = require('../models/hotelground');
 
 
 
-router.get('/', catchAsync( async(req, res) =>{
-    //res.send("Hello from debadyuti");
-    const hotelgrounds = await Hotelground.find({});
-    res.render('hotelgrounds/index',  {hotelgrounds});
-}))
+router.get('/', catchAsync(hotelgrounds.index));
 
-router.get('/new', isLoggedIn,(req, res) =>{
-    
-    res.render('hotelgrounds/new');
-})
+router.get('/new', isLoggedIn, hotelgrounds.randerNewForm)
 
-router.post('/', validateHotelground, catchAsync(async (req, res, next) =>{
-    
-   // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
-
-   
-   const hotelground =new Hotelground(req.body.hotelground);
-   hotelground.author =  req.user._id;
-   await hotelground.save();
-   req.flash('success','Successfully made a new campground')
-    res.redirect(`/hotelgrounds/${hotelground._id}`)
-   
-}))
+router.post('/', validateHotelground, catchAsync(hotelgrounds.createHotelground))
 
 
-router.get('/:id', catchAsync(async(req, res,) =>{
-    const hotelground = await Hotelground.findById(req.params.id).populate({
-        path:'reviews',
-        populate : {
-            path: 'author'
-        }
-    }).populate('author');
-    console.log(hotelground);
-    if(!hotelground){
-        req.flash('error','Cannot Find');
-        return res.redirect('/hotelgrounds');
-    }
-    res.render('hotelgrounds/show', { hotelground });
-}))
+router.get('/:id', catchAsync(hotelgrounds.showHotelground))
 
-router.get('/:id/edit', isLoggedIn ,isAuthor, catchAsync(async(req, res) =>{
-    const { id } = req.params;
-    const hotelground = await Hotelground.findById(id);
-    
-    if(!hotelground){
-        req.flash('error','Cannot Find');
-        return res.redirect('/hotelgrounds');
-    }
-   
-    res.render('hotelgrounds/edit', { hotelground });
-}))
+router.get('/:id/edit', isLoggedIn ,isAuthor, catchAsync(hotelgrounds.randerEditForm ))
 
 
-router.put('/:id',isLoggedIn, isAuthor, validateHotelground, catchAsync(async(req, res) =>{
-    const { id } = req.params;
-   
-    const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
-    req.flash('success','Successfully Updated Hotelground')
-    res.redirect(`/hotelgrounds/${hotelground._id}`)
-}));
+router.put('/:id',isLoggedIn, isAuthor, validateHotelground, catchAsync(hotelgrounds.updateHotelground));
 
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async(req,res) =>{
-    const { id } = req.params;
-    await Hotelground.findByIdAndDelete(id);
-    req.flash('success', "Hotelground Deleted ")
-    res.redirect('/hotelgrounds');
-}))
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(hotelgrounds.deleteHotelground))
 
 module.exports = router;
