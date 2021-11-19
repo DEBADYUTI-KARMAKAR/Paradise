@@ -22,3 +22,14 @@ module.exports.register = async(req, res)=>{
         res.redirect('register')
     }
 }
+
+module.exports.renderLogin = (req,res) =>{
+    res.render('users/login');
+}
+
+module.exports.login = (req,res) =>{
+    req.flash('success','Welcome')
+    const redirectUrl = req.session.returnTo || '/hotelgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl)
+}
