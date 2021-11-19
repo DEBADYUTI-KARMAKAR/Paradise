@@ -6,22 +6,24 @@ const {isLoggedIn, validateHotelground, isAuthor} = require('../middleware')
 
 const Hotelground = require('../models/hotelground');
 
-
-
-router.get('/', catchAsync(hotelgrounds.index));
-
+router.route('/')
+    .get(catchAsync(hotelgrounds.index))
+    .post(isLoggedIn, validateHotelground, catchAsync(hotelgrounds.createHotelground))
+    
 router.get('/new', isLoggedIn, hotelgrounds.randerNewForm)
-
-router.post('/', validateHotelground, catchAsync(hotelgrounds.createHotelground))
-
-
-router.get('/:id', catchAsync(hotelgrounds.showHotelground))
+router.route('/:id')
+    .get(catchAsync(hotelgrounds.showHotelground))
+    .put(isLoggedIn, isAuthor, validateHotelground, catchAsync(hotelgrounds.updateHotelground))
+    .delete(isLoggedIn, isAuthor, catchAsync(hotelgrounds.deleteHotelground))
+    
 
 router.get('/:id/edit', isLoggedIn ,isAuthor, catchAsync(hotelgrounds.randerEditForm ))
 
 
-router.put('/:id',isLoggedIn, isAuthor, validateHotelground, catchAsync(hotelgrounds.updateHotelground));
 
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(hotelgrounds.deleteHotelground))
+
+
+
+
 
 module.exports = router;
