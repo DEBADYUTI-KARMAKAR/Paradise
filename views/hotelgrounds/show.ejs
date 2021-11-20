@@ -1,5 +1,6 @@
 <% layout('layouts/boilerplate')%>
 
+
 <div class="row">
     <div class="col-6 ">
         <div class="card mb-3">
@@ -38,7 +39,6 @@
             <div class="mb-3">
                 <label class="form-label" for="body">Review</label>
                 <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-
                 <div class="valid-feedback">
                     Valid
                 </div>
@@ -53,6 +53,7 @@
                     <h5 class="card-title">Rating <%= review.rating %></h5>
                     <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6>
                     <p class="card-title">Review: <%= review.body %></p>
+
                     <% if( currentUser && review.author.equals(currentUser._id)) { %>
                     <form action="/hotelgrounds/<%= hotelground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-sm btn-danger">Delete</button>
