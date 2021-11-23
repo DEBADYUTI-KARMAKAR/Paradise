@@ -3,8 +3,9 @@ const router = express.Router();
 const hotelgrounds = require('../controllers/hotelgrounds')
 const catchAsync = require('../utils/catchAsync');
 const {isLoggedIn, validateHotelground, isAuthor} = require('../middleware')
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 const Hotelground = require('../models/hotelground');
 
@@ -13,7 +14,8 @@ router.route('/')
     .get(catchAsync(hotelgrounds.index))
     //.post(isLoggedIn, validateHotelground, catchAsync(hotelgrounds.createHotelground))
     .post(upload.array('image'), (req, res) => {
-        res.send(req.body, req.files);
+        console.log(req.body, req.files);
+        res.send("IT Works!!")
     })
     
 router.get('/new', isLoggedIn, hotelgrounds.randerNewForm)
