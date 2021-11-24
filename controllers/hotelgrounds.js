@@ -15,10 +15,11 @@ module.exports.createHotelground = async (req, res, next) =>{
     
     // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
  
-    
     const hotelground =new Hotelground(req.body.hotelground);
+    hotelground.image= req.files.map(f => ({url: f.path, filename: f.filename}))
     hotelground.author =  req.user._id;
     await hotelground.save();
+    console.log(hotelground);
     req.flash('success','Successfully made a new campground')
      res.redirect(`/hotelgrounds/${hotelground._id}`)
     

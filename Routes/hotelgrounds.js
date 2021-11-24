@@ -12,11 +12,11 @@ const Hotelground = require('../models/hotelground');
 
 router.route('/')
     .get(catchAsync(hotelgrounds.index))
-    //.post(isLoggedIn, validateHotelground, catchAsync(hotelgrounds.createHotelground))
-    .post(upload.array('image'), (req, res) => {
+    .post(isLoggedIn,  upload.array('image'),validateHotelground, catchAsync(hotelgrounds.createHotelground))
+    /*.post(upload.array('image'), (req, res) => {
         console.log(req.body, req.files);
         res.send("IT Works!!")
-    })
+    })*/
     
 router.get('/new', isLoggedIn, hotelgrounds.randerNewForm)
 router.route('/:id')
