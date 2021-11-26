@@ -21,17 +21,11 @@ router.route('/')
 router.get('/new', isLoggedIn, hotelgrounds.randerNewForm)
 router.route('/:id')
     .get(catchAsync(hotelgrounds.showHotelground))
-    .put(isLoggedIn, isAuthor, validateHotelground, catchAsync(hotelgrounds.updateHotelground))
+    .put(isLoggedIn, isAuthor,upload.array('image') , validateHotelground, catchAsync(hotelgrounds.updateHotelground))
     .delete(isLoggedIn, isAuthor, catchAsync(hotelgrounds.deleteHotelground))
     
 
 router.get('/:id/edit', isLoggedIn ,isAuthor, catchAsync(hotelgrounds.randerEditForm ))
-
-
-
-
-
-
 
 
 module.exports = router;

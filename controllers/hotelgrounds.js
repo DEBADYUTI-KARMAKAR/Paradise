@@ -56,6 +56,10 @@ module.exports.updateHotelground = async(req, res) =>{
     const { id } = req.params;
    
     const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
+    const imgs =req.files.map(f => ({url: f.path, filename: f.filename}))
+    hotelground.image.push(...imgs);
+
+    await hotelground.save();
     req.flash('success','Successfully Updated Hotelground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
 }
