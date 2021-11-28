@@ -48,6 +48,15 @@
                 </div>
             </div>
             <div class="mb-3">
+                <% hotelground.image.forEach(function(img, i) { %>
+                    <img src="<%=img.url %>" class="img-thumbnail" alt="">
+                    <div class="form-check-inline">
+                        <input type="checkbox">
+                    </div>
+                    <label for="Delete"></label>
+                <% }) %>
+            </div>
+            <div class="mb-3">
                 <button class="btn btn-info">Update Hotelground</button>
             </div>
             
