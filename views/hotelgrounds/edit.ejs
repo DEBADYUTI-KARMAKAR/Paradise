@@ -51,9 +51,9 @@
                 <% hotelground.image.forEach(function(img, i) { %>
                     <img src="<%=img.url %>" class="img-thumbnail" alt="">
                     <div class="form-check-inline">
-                        <input type="checkbox">
+                        <input type="checkbox" id="image-<%=i%>">
                     </div>
-                    <label for="Delete"></label>
+                    <label for="image-<%=i%>">Delete?</label>
                 <% }) %>
             </div>
             <div class="mb-3">
