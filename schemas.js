@@ -9,7 +9,8 @@ module.exports.hotelgroundSchema = Joi.object({
         location : Joi.string().required(),
         description : Joi.string().required(),
 
-    }).required()
+    }).required(),
+    deleteImages: Joi.array()
 
 });
 

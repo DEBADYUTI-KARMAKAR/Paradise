@@ -54,7 +54,7 @@ module.exports.randerEditForm = async(req, res) =>{
 
 module.exports.updateHotelground = async(req, res) =>{
     const { id } = req.params;
-   
+   console.log(req.body);
     const hotelground = await Hotelground.findByIdAndUpdate(id, {...req.body.hotelground });
     const imgs =req.files.map(f => ({url: f.path, filename: f.filename}))
     hotelground.image.push(...imgs);
