@@ -60,6 +60,10 @@ module.exports.updateHotelground = async(req, res) =>{
     hotelground.image.push(...imgs);
 
     await hotelground.save();
+    if(req.body.deleteImages){
+        await hotelground.updateOne({ $pull:{ image: { filename: { $in: req.body.deleteImages}}}})
+        console.log(hotelground);
+    }
     req.flash('success','Successfully Updated Hotelground')
     res.redirect(`/hotelgrounds/${hotelground._id}`)
 }
