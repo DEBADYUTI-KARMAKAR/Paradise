@@ -1,4 +1,6 @@
 const Hotelground = require('../models/hotelground');
+const { cloudinary } = require("../cloudinary");
+
 module.exports.index =async(req, res) =>{
     //res.send("Hello from debadyuti");
     const hotelgrounds = await Hotelground.find({});
@@ -61,6 +63,9 @@ module.exports.updateHotelground = async(req, res) =>{
 
     await hotelground.save();
     if(req.body.deleteImages){
+        for(let filename of req.body.deleteImages){
+            await cloudinary.uploader.destroy(filename);
+        }
         await hotelground.updateOne({ $pull:{ image: { filename: { $in: req.body.deleteImages}}}})
         console.log(hotelground);
     }
