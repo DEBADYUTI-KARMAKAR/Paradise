@@ -23,16 +23,16 @@ module.exports.createHotelground = async (req, res, next) =>{
         query: req.body.hotelground.location,
         limit: 1
     }).send()
-    //console.log(geoData);
-    res.send(geoData.body.features[0].geometry.coordinates);
-   /* const hotelground =new Hotelground(req.body.hotelground);
+    
+    const hotelground =new Hotelground(req.body.hotelground);
+    hotelground.geometry = geoData.body.features[0].geometry;
     hotelground.image= req.files.map(f => ({url: f.path, filename: f.filename}))
     hotelground.author =  req.user._id;
     await hotelground.save();
     console.log(hotelground);
     req.flash('success','Successfully made a new campground')
      res.redirect(`/hotelgrounds/${hotelground._id}`)
-    */
+    
  }
 
  module.exports.showHotelground = async(req, res,) =>{
