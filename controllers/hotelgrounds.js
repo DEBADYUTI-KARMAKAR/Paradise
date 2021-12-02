@@ -1,4 +1,7 @@
 const Hotelground = require('../models/hotelground');
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken })
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index =async(req, res) =>{
@@ -16,15 +19,20 @@ module.exports.randerNewForm = (req, res) =>{
 module.exports.createHotelground = async (req, res, next) =>{
     
     // if(!req.body.hotelground) throw new ExpressError('Invalid Hotelground Data', '400')
- 
-    const hotelground =new Hotelground(req.body.hotelground);
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.hotelground.location,
+        limit: 1
+    }).send()
+    //console.log(geoData);
+    res.send(geoData.body.features[0].geometry.coordinates);
+   /* const hotelground =new Hotelground(req.body.hotelground);
     hotelground.image= req.files.map(f => ({url: f.path, filename: f.filename}))
     hotelground.author =  req.user._id;
     await hotelground.save();
     console.log(hotelground);
     req.flash('success','Successfully made a new campground')
      res.redirect(`/hotelgrounds/${hotelground._id}`)
-    
+    */
  }
 
  module.exports.showHotelground = async(req, res,) =>{
