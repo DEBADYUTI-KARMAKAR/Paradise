@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-6 ">
-        <div id='map' style='width: 400px; height: 300px;'></div>
+        
         <div id="hotelgroundCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <% hotelground.image.forEach((img, i) => {  %>
@@ -54,6 +54,7 @@
         </div>
         </div>
         <div class="col-6">
+            <div id='map' style='width: 630px; height: 300px;'></div>
             <% if(currentUser) { %>
             <h2>Leave a Review</h2>
         <form action="/hotelgrounds/<%=hotelground._id%>/reviews" method="POST" class="mb-3 validated-form"  novalidate>
