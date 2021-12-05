@@ -3,7 +3,7 @@
 
 <h1>All Campgrounds</h1>
 <div>
-    <a href="/hotelgrounds/new">Add Campground</a>
+    <a href="/hotelgrounds/new">Add Hotelground</a>
 </div>
 <% for (let hotelground of hotelgrounds){%>
 <div class="card" mb-3>
@@ -31,6 +31,6 @@
 
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-   
+    const hotelgrounds = {features: <%-JSON.stringify(hotelgrounds)%> }
 </script>
 <script src="/javascripts/clusterMap.js"></script>
