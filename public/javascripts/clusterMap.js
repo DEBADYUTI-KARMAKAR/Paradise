@@ -5,6 +5,8 @@ style: 'mapbox://styles/mapbox/dark-v10',
 center: [-103.5917, 40.6699],
 zoom: 3
 });
+
+console.log(hotelgrounds)
  
 map.on('load', () => {
     console.log("MAP LOADED!!");
@@ -104,11 +106,9 @@ zoom: zoom
 // description HTML from its properties.
 map.on('click', 'unclustered-point', (e) => {
     console.log("Unclustered Point Clicked!!");
+    const text =e.features[0].properties.popupmarkup;
 const coordinates = e.features[0].geometry.coordinates.slice();
-const mag = e.features[0].properties.mag;
-const tsunami =
-e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
- 
+
 // Ensure that if the map is zoomed out such that
 // multiple copies of the feature are visible, the
 // popup appears over the copy being pointed to.
@@ -119,7 +119,7 @@ coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 new mapboxgl.Popup()
 .setLngLat(coordinates)
 .setHTML(
-`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+text
 )
 .addTo(map);
 });

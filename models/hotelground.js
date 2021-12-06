@@ -12,6 +12,8 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200');
 })
 
+const opts = { toJSON: { virtuals: true } };
+
 const HotelgroundSchema = new Schema({
     title : String,
     image : [ImageSchema],
@@ -38,7 +40,12 @@ const HotelgroundSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref: 'Review'
         }
-    ]
+    ],
+    
+}, opts);
+
+HotelgroundSchema.virtual('properties.popupmarkup').get(function() {
+    return "Popup Text"
 });
 
 HotelgroundSchema.post('findOneAndDelete', async function (doc) {
