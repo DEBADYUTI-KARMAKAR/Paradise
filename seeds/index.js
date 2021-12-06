@@ -26,7 +26,7 @@ const seedDB = async () =>{
     /*const c = new Hotelground({title:'purplr field'});
     await c.save();*/
 
-    for(let i = 0;i<50;i++){
+    for(let i = 0;i<200;i++){
         
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10 ;
