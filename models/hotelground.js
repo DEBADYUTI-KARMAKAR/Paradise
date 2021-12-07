@@ -45,7 +45,9 @@ const HotelgroundSchema = new Schema({
 }, opts);
 
 HotelgroundSchema.virtual('properties.popupmarkup').get(function() {
-    return "Popup Text"
+    return `<h6><a href="/hotelgrounds/${this._id}">${this.title}</a></h6>
+            <p>${this.location}<p>
+    `
 });
 
 HotelgroundSchema.post('findOneAndDelete', async function (doc) {

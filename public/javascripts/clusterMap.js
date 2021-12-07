@@ -106,7 +106,7 @@ zoom: zoom
 // description HTML from its properties.
 map.on('click', 'unclustered-point', (e) => {
     console.log("Unclustered Point Clicked!!");
-    const text =e.features[0].properties.popupmarkup;
+    const {popupmarkup} =e.features[0].properties;
 const coordinates = e.features[0].geometry.coordinates.slice();
 
 // Ensure that if the map is zoomed out such that
@@ -119,7 +119,7 @@ coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 new mapboxgl.Popup()
 .setLngLat(coordinates)
 .setHTML(
-text
+    popupmarkup
 )
 .addTo(map);
 });
