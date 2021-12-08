@@ -46,13 +46,13 @@ const seedDB = async () =>{
             image:  [
                 {
                  
-                  url: 'https://res.cloudinary.com/dwc6z7wkm/image/upload/v1637910920/Paradise/qanaarczdhzygl0meepl.jpg',
-                  filename: 'Paradise/qanaarczdhzygl0meepl'
+                  url: 'https://res.cloudinary.com/dwc6z7wkm/image/upload/v1638989059/Paradise/20-SM343221_rhmaxv.jpg',
+                  filename: 'Paradise/20-SM343221_rhmaxv'
                 },
                 {
                   
-                  url: 'https://res.cloudinary.com/dwc6z7wkm/image/upload/v1637910921/Paradise/zmckoq6rp9je6zf58cyy.jpg',
-                  filename: 'Paradise/zmckoq6rp9je6zf58cyy'
+                  url: 'https://res.cloudinary.com/dwc6z7wkm/image/upload/v1638989059/Paradise/20-SM343221_rhmaxv.jpg',
+                  filename: 'Paradise/20-SM343221_rhmaxv'
                 }
               ]
         })
