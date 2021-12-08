@@ -54,16 +54,16 @@
         </div>
         </div>
         <div class="col-6">
-            <div id='map' style='width: 630px; height: 300px;'></div>
+            <div id="map"></div>
             <% if(currentUser) { %>
             <h2>Leave a Review</h2>
         <form action="/hotelgrounds/<%=hotelground._id%>/reviews" method="POST" class="mb-3 validated-form"  novalidate>
             <div class="mb-3">
-                <label class="form-label" for="rating" >Rating</label>
+                <label class="form-label" for="rating" style="color: white;" >Rating</label>
                 <input class="form-range" type="range" min="1" max="5"  name="review[rating]" id="rating">
             </div>
             <div class="mb-3">
-                <label class="form-label" for="body">Review</label>
+                <label class="form-label" for="body" style="color: white;">Review</label>
                 <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
                 <div class="valid-feedback">
                     Valid
