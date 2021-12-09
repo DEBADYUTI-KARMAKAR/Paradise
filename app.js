@@ -18,8 +18,10 @@ const LocalStrategy = require("passport-local");
 const User = require('./models/user');
 const Hotelground = require('./models/hotelground');
 const Review = require('./models/review');
+
+
 const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require("helmet");
+
 const userRoutes = require('./routes/users')
 const hotelgroundRoutes = require('./routes/hotelgrounds')
 const reviewRoutes = require('./routes/reviews')
@@ -65,7 +67,7 @@ const sessionConfig ={
 
 app.use(session(sessionConfig))
 app.use(flash());
-app.use(helmet({contentSecurityPolicy: false}));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
