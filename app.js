@@ -1,6 +1,7 @@
-if(process.env.NODE_ENV !== "production"){
+/*if(process.env.NODE_ENV !== "production"){
     require('dotenv').config();
-}
+}*/
+require('dotenv').config();
 console.log(process.env.SECRET);
 console.log(process.env.API_KEY);
 
