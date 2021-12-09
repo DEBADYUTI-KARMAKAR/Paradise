@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.1.0",
     "express-session": "^1.17.2",
+    "helmet": "^4.6.0",
     "joi": "^17.4.2",
     "method-override": "^3.0.0",
     "mongoose": "^5.13.13",
