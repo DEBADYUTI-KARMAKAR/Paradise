@@ -18,7 +18,7 @@ const LocalStrategy = require("passport-local");
 const User = require('./models/user');
 const Hotelground = require('./models/hotelground');
 const Review = require('./models/review');
-
+const helmet = require("helmet");
 
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -67,6 +67,7 @@ const sessionConfig ={
 
 app.use(session(sessionConfig))
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false}));
 
 
 app.use(passport.initialize());
@@ -122,6 +123,7 @@ app.use((err,req,res,next) => {
     res.status(statusCode).render('error',{err})
     //res.send("Opss!!Something went wrong");
 })
+
 
 app.listen(3000, () =>{
     console.log("Hosting 3000");
