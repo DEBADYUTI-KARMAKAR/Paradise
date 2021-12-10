@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate')%>
-
+<link rel="stylesheet" href="/stylesheets/stars.css">
 
 <div class="row">
     <div class="col-6 ">
@@ -76,8 +76,10 @@
             <div class="card mb-3">
 
                 <div class=" card-body">
-                    <h5 class="card-title">Rating <%= review.rating %></h5>
                     <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6>
+                    <p class="starability-result" data-rating="<%= review.rating %>">
+                      Rated: 3 stars
+                    </p>
                     <p class="card-title">Review: <%= review.body %></p>
 
                     <% if( currentUser && review.author.equals(currentUser._id)) { %>
