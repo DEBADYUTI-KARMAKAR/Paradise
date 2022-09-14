@@ -1,6 +1,6 @@
-/*if(process.env.NODE_ENV !== "production"){
+if(process.env.NODE_ENV !== "production"){
     require('dotenv').config();
-}*/
+}
 require('dotenv').config();
 console.log(process.env.SECRET);
 console.log(process.env.API_KEY);
@@ -26,8 +26,11 @@ const userRoutes = require('./routes/users')
 const hotelgroundRoutes = require('./routes/hotelgrounds')
 const reviewRoutes = require('./routes/reviews')
 
+//const MongoStore = require('connect-mongo')(session);
 
-mongoose.connect('mongodb://localhost:27017/paradise',{
+const dbUrl = process.env.DB_URL;
+//mongoose.connect('mongodb://localhost:27017/paradise',{
+mongoose.connect(dbUrl,{
     useNewUrlParser:true,
     useCreateIndex: true,
     useUnifiedTopology : true,
@@ -53,8 +56,17 @@ app.use(mongoSanitize({
     replaceWith: '_'
 }));
 
+    // const store = new MongoStore({
+    //     url: dbUrl,
+    //     secret: process.env.SECRET,
+    //     touchAfter: 24 * 3600
+    // });
+    // store.on('error', function(error) { 
+    //     console.log(error);
+    // } );
 
 const sessionConfig ={
+    //store,
     name: 'session',
     secret : 'this is secret',
     resave: false,
